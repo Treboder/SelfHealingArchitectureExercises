@@ -1,33 +1,46 @@
+
+
+# Required Tools
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) as Local Kubernetes Cluster
+- [kubectl](https://kubernetes.io/docs/reference/kubectl/)
+- [Hey Load testing](https://github.com/rakyll/hey)
+
 # Lesson 3 Exercises
 
-## Exercise # 1 - Horizontal Scaling
+## Exercise # 1 - Horizontal Scaling (local Kubernetes)
 
-1. Ensure you have connectivity to your local Kubernetes cluster
+1. Ensure you have connectivity to your local Kubernetes cluster   
+   1. `kubectl config use-context docker-desktop`
+   2. Optional: Permanently switch namespace with `kubectl config set-context --current --namespace=udacity` and you do not need `-n udacity` at the end of every command
 2. Apply the `hello-world.yml` deployment configuration file to create the `hello-world` application
-    1. `kubectl apply -f hello-world.yml`
-3. Run `kubectl get pods -n udacity` to the `hello-world` application has deployed successfully
-4. You will need a running metrics server on the cluster to identify CPU/memory utilization. Apply the `metrics-server.yml` configuration provided
-    1. `kubectl apply -f metrics-server.yml`
+    1. Run`kubectl apply -f hello.yml`
+    2. Run `kubectl get pods -n udacity` to see that the `hello-world` application has deployed successfully
+    3. Also check with your browser on `http://localhost:30091/`
+3. You will need a running metrics server on the cluster to identify CPU/memory utilization. Apply the `metrics-server.yml` configuration provided
+    1. Run `kubectl apply -f metrics-server.yml`
     2. You'll want to wait 5 minutes for the metrics server to become operational
        1. you can confirm progress of the metrics server via `kubectl get pods -n kube-system`
-5. Run `kubectl top pods` to confirm the metrics server is working
-6. You will need a `HorizontalPodAutoscaler` configuration to define the rules around scaling
-    1. One has been provided for you in `scale.yml`
-    1. This will scale up to a max of `10` replicas and wind down to a minimum of `1` replica
-    1. It is targeting (`scaleTargetRef`) the `hello-world` deployment
-    1. It will trigger a scaling event based on the `metrics` section when the avg CPU utilization is >= 50% && avg memory utilization is >= 100MB
-7. Now we will trigger a scaling event by using <a href="https://github.com/rakyll/hey" target="_blank">Hey</a> to load test the service
+4. Run `kubectl top pods` to confirm the metrics server is working (you should see table with pods and cpu and memory values)
+5. You will need a `HorizontalPodAutoscaler` configuration to define the rules around scaling
+    1. One has been provided for you in `scale.yml` --> run `kubectl apply -f .\scale.yml`
+       1. This will scale up to a max of `10` replicas and wind down to a minimum of `1` replica
+       2. It is targeting (`scaleTargetRef`) the `hello-world` deployment
+       3. It will trigger a scaling event based on the `metrics` section when the avg CPU utilization is >= 50% && avg memory utilization is >= 100MB
+    2. Verify the running autoscaler with `kubectl get HorizontalPodAutoscaler`
+6. Now we will trigger a scaling event by using [Hey](https://github.com/rakyll/hey) to load test the service
     1. Confirm the port of the service: `kubectl get services -n udacity`
-    1. `hey -n 1000 -c 1000 -z 1m http://localhost:30091`
-8. You can track the scaling events via these commands
+    2. Linux `hey -n 1000 -c 1000 -z 1m http://localhost:30091`
+    3. Windows `./hey_windows_amd64 -n 10 -c 10 -z 1m localhost:30091` using the executable from [Hey](https://github.com/rakyll/hey)
+7. You can track the scaling events via these commands
    1. `kubectl get HorizontalPodAutoscaler -n udacity`
    2. `kubectl describe HorizontalPodAutoscaler hello-world -n udacity`
-9. Save the results `kubectl get pods -n udacity`
-10. Tear down terraform the environment
+8. Save the results `kubectl get pods -n udacity`
+9. Tear down terraform the environment
      1. `kubectl delete all --all -n udacity`
      2. `kubectl delete -f metrics-server.yml`
 
-## Exercise # 2 - EC2 Scaling
+## Exercise # 2 - EC2 Scaling (AWS)
 
 1. Log into your student AWS account and switch to region `us-east-2`
 2. Setup your local aws credentials
@@ -74,7 +87,7 @@
 
 
 
-## Exercise # 3 - Scaling EC2 nodes in Kubernetes Clusters
+## Exercise # 3 - Scaling EC2 nodes in Kubernetes Clusters (AWS)
 Requires [eksctl](https://eksctl.io/introduction/#installation)
 
 1. Log into your student AWS account and switch to region `us-east-2`

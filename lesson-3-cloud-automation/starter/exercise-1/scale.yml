@@ -22,5 +22,5 @@ spec:
       name: memory
       target:
         type: Utilization
-        # averageUtilization: 100       # target percentage
-        averageValue: 100              # target average value
+        averageUtilization: 50       # target percentage
+        # averageValue: 100              # target average value (100Mi)

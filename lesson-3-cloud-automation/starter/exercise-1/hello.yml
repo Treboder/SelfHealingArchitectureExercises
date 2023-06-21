@@ -46,4 +46,4 @@ spec:
     - port: 80
       protocol: TCP
       targetPort: 9000
-      nodePort: 30091
+      nodePort: 30091 # access to the app via http://localhost:30091/

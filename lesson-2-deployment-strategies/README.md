@@ -33,17 +33,17 @@ proceed as follows:
    1. Linux and MacOS -> `export AWS_PROFILE=admin`
    2. Windows Command Prompt -> `setx AWS_PROFILE admin`
    3. PowerShell -> `$Env:AWS_PROFILE="admin"`
-6. Get the currently used profile with `aws configure list`
-7. Verify the currently active profile with `aws sts get-caller-identity` 
-8. Exemplary list S3 buckets from this profile with: `aws s3 ls --profile <profile_name>`
-9. Remove unwanted profiles (or add manually), by editing the config files:
+5. Get the currently used profile with `aws configure list`
+6. Verify the currently active profile with `aws sts get-caller-identity` 
+7. Exemplary list S3 buckets from this profile with: `aws s3 ls --profile <profile_name>`
+8. Remove unwanted profiles (or add manually), by editing the config files:
    1. `vi ~/.aws/credentials`
    2. `vi ~/.aws/config` 
 
 ## Visualizing Local Kubernetes Cluster
 You may visualize your local kubernetes cluster using the `ops-view` deployment found in the [visual-support](https://github.com/udacity/nd087-c3-self-healing-architectures-exercises/tree/7ff0779bfbc514ca11334bd3912d8d6060e50533/lesson-2-deployment-strategies/exercises/starter/visual-support) directory
 1. `kubectl apply -f visual-support/ops-view.yml`
-1. Visit the URL `http://localhost:30092/` on your browser
+2. Visit the URL `http://localhost:30092/` on your browser
 
 Remove this deployment using: `kubectl delete -f visual-support/ops-view.yml`
 
@@ -72,6 +72,7 @@ Remove this deployment using: `helm uninstall kube-ops-view`
 ## Exercise # 1 - Basic Deployment (on local Docker Desktop Kubernetes)
 1. Ensure you have connectivity to your local kubernetes cluster
    1. `kubectl config use-context docker-desktop`
+   2. Optional: Permanently switch namespace with `kubectl config set-context --current --namespace=udacity` and you do not need `-n udacity` at the end of every command
 2. Apply the `basic-deployment.yml` deployment configuration file. 
    1. `kubectl apply -f basic-deployment.yml`
 3. Take a screenshot of the running pods: 
@@ -92,6 +93,7 @@ Remove this deployment using: `helm uninstall kube-ops-view`
 ## Exercise # 2 - Rolling Deployment (on local Docker Desktop Kubernetes)
 1. Ensure you have connectivity to your local kubernetes cluster
    1. `kubectl config use-context docker-desktop`
+   2. Optional: Permanently switch namespace with `kubectl config set-context --current --namespace=udacity` and you do not need `-n udacity` at the end of every command
 2. Apply the `rolling_deploy.yml` deployment configuration file.
    1. `kubectl apply -f .\rolling_deploy.yml`
 3. Take a screenshot of the running pods: `kubectl get pods -n udacity`
@@ -112,6 +114,7 @@ Remove this deployment using: `helm uninstall kube-ops-view`
 ## Exercise # 3 - Canary Deployment (on local Docker Desktop Kubernetes)
 1. Ensure you have connectivity to your local kubernetes cluster
    1. `kubectl config use-context docker-desktop`
+   2. Optional: Permanently switch namespace with `kubectl config set-context --current --namespace=udacity` and you do not need `-n udacity` at the end of every command
 2. Apply the `index_v1_html.yml` & `index_v2_html.yml` configmaps to deploy the service html templates.
    1. Run `kubectl apply -f index_v1_html.yml`
    2. Run`kubectl apply -f index_v2_html.yml`
@@ -158,7 +161,7 @@ Remove this deployment using: `helm uninstall kube-ops-view`
    2. Check with `kubectl get pods` shows the running pods with app "blue"    
 7. Check the deployment via curl
    1. Get the external ip from the load balancer with 'kubectl get svc'
-   2. Run `curl <external_ip_of_loadbalancer>` to see "<html><h1>This is version BLUE</h1></html>"
+   2. Run `curl <external_ip_of_loadbalancer>` to see `<html><h1>This is version BLUE</h1></html>`
    3. Or simply start your browser of choice: `<external_ip_of_loadbalancer>`
 8. You'll notice there is a load balancer service created for you in the `kubernetes_resources.tf`
    1. There is also an associated dns zone `udacityexercise` in `dns.tf` that allows you to curl the hostname `blue-green.udacityexercise` from an ec2 instance

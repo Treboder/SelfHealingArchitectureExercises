@@ -8,7 +8,7 @@ This repo covers three lessons from the Udacity course "Site Reliability Enginee
 
 The original repo is: [self-healing-architectures-exercises](https://github.com/udacity/nd087-c3-self-healing-architectures-exercises).
 
-## Mandatory local Kubernetes Setup
+## Mandatory Kubernetes Setup
 - [kubernetes](https://kubernetes.io/docs/tasks/tools/)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) with activated Kubernetes
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/)
