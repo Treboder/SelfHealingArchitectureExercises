@@ -1,7 +1,6 @@
 # INTRODUCTION
 
 These examples demonstrate typical deployment procedures as part of Udacity course "Site Reliability Engineer". 
-The original repo is: [self-healing-architectures-exercises](https://github.com/udacity/nd087-c3-self-healing-architectures-exercises).
 
 The exercises comprise four different deployment strategies:
 1. Exercise # 1 - Basic Deployment (on local Docker Desktop Kubernetes)

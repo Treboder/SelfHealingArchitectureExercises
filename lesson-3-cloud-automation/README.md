@@ -1,6 +1,6 @@
-# Lesson 3 Excercises
+# Lesson 3 Exercises
 
-## Excercise # 1 - Horizontal Scaling
+## Exercise # 1 - Horizontal Scaling
 
 1. Ensure you have connectivity to your local Kubernetes cluster
 2. Apply the `hello-world.yml` deployment configuration file to create the `hello-world` application
@@ -27,7 +27,7 @@
      1. `kubectl delete all --all -n udacity`
      2. `kubectl delete -f metrics-server.yml`
 
-## Excercise # 2 - EC2 Scaling
+## Exercise # 2 - EC2 Scaling
 
 1. Log into your student AWS account and switch to region `us-east-2`
 2. Setup your local aws credentials
@@ -74,7 +74,7 @@
 
 
 
-## Excercise # 3 - Scaling EC2 nodes in Kubernetes Clusters
+## Exercise # 3 - Scaling EC2 nodes in Kubernetes Clusters
 Requires [eksctl](https://eksctl.io/introduction/#installation)
 
 1. Log into your student AWS account and switch to region `us-east-2`
