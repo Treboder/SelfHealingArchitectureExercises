@@ -2,6 +2,28 @@
 1. Docker Desktop with activated Kubernetes
 2. Kubectl
 
+## AWS CLI Setup
+Based on [Set Up the AWS CLI](https://aws.amazon.com/de/getting-started/guides/setup-environment/module-three/)
+proceed as follows:
+
+1. Install the AWS CLI and verify with: `aws --version`
+2. Create new profile with `aws configure --profile <profile_name>` and set:
+   1. AWS Access Key ID
+   2. AWS Secret Access Key
+   3. Default Region (e.g. us-east-1)
+   4. Default Output Format (i.e. json)
+3. Get the available profiles with `aws configure list-profiles`
+4. Switch the profile depending on your OS with:
+   1. Linux and MacOS -> `export AWS_PROFILE=admin`
+   2. Windows Command Prompt -> `setx AWS_PROFILE admin`
+   3. PowerShell -> `$Env:AWS_PROFILE="admin"`
+6. Get the currently used profile with `aws configure list`
+7. Verify the currently active profile with `aws sts get-caller-identity` 
+8. Exemplary list S3 buckets from this profile with: `aws s3 ls --profile <profile_name>`
+9. Remove unwanted profiles (or add manually), by editing the config files:
+   1. `vi ~/.aws/credentials`
+   2. `vi ~/.aws/config` 
+
 ## Exercise # 1 - Basic Deployment
 1. Ensure you have connectivity to your local kubernetes cluster
    1. `kubectl config use-context docker-desktop`
