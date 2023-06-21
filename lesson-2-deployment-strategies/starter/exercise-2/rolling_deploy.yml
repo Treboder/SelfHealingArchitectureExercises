@@ -4,7 +4,7 @@ metadata:
   name: nginx-rolling
   namespace: udacity
 spec:
-  replicas: 6
+  replicas: 6 # creates 6 pods
   selector:
     matchLabels:
       app: nginx-rolling
@@ -18,13 +18,13 @@ spec:
       - name: nginx
         image: nginx:1.20.1
         ports:
-        - containerPort: 80
-        readinessProbe: # health check on port 80
+        - containerPort: 80 # define port for the health check
+        readinessProbe:     # enable health check on port 80
           httpGet:
             path: /
             port: 80
   strategy:
     type: RollingUpdate # enables rolling deployment strategy
     rollingUpdate:
-      maxSurge: 1 # specifies the maximum number (or percentage) of pods above the specified number of replicas.
-      maxUnavailable: 0 # declares the maximum number (or percentage) of unavailable pods during the update.
+      maxSurge: 1         # specifies the maximum number (or percentage) of pods above the specified number of replicas.
+      maxUnavailable: 0   # declares the maximum number (or percentage) of unavailable pods during the update.

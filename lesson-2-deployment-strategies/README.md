@@ -1,40 +1,39 @@
-## Excercise # 1 - Basic Deployment
-1. Ensure you have connectivity to your local kubernetes cluster (`kubectl config use-context docker-desktop`)
+## Local setup
+1. Docker Desktop with activated Kubernetes
+2. Kubectl
+
+## Exercise # 1 - Basic Deployment
+1. Ensure you have connectivity to your local kubernetes cluster
+   1. `kubectl config use-context docker-desktop`
 2. Apply the `basic-deployment.yml` deployment configuration file. 
-3. Take a screenshot of the running pods: `kubectl get pods -n udacity`
+   1. `kubectl apply -f basic-deployment.yml`
+3. Take a screenshot of the running pods: 
+   1. `kubectl get pods -n udacity`
 4. Document the image number in the `nginx-basic` deployment
-   1. `kubectl describe deployment nginx-basic`
+   1. Get the <container_name> from `kubectl get pods -n udacity` (one of them)
+   2. Run `kubectl describe pod <container_name> -n udacity`
 5. Now we will initiate a basic deployment for a newer version of nginx using `basic-deployment-image-bump.yml`
    1. `kubectl delete -f basic-deployment.yml`
    2. `kubectl apply -f basic-deployment-image-bump.yml`
-6. Take a screenshot of the running pods: `kubectl get pods -n udacity`
+6. Take a screenshot of the running pods: 
+   1. `kubectl get pods -n udacity`
 7. Document the image number in the `nginx-basic` deployment
     1. `kubectl describe deployment nginx-basic`
 8. Tear down environment
     1. `kubectl delete all --all -n udacity`
 
-## Excercise # 2 - Rolling Deployment
+## Exercise # 2 - Rolling Deployment
 1. Ensure you have connectivity to your local kubernetes cluster
+   1. `kubectl config use-context docker-desktop`
 2. Apply the `rolling_deploy.yml` deployment configuration file.
-   kubectl apply -f .\rolling_deploy.yml
-
+   1. `kubectl apply -f .\rolling_deploy.yml`
 3. Take a screenshot of the running pods: `kubectl get pods -n udacity`
 4. Document the image number in the `nginx-rolling` deployment
+   1. Get the <container_name> from `kubectl get pods -n udacity` (one of them)
+   2. Run `kubectl describe pod <container_name> -n udacity`
 5. Now we will initiate a rolling deployment for a newer version of nginx via a bash script
-   1. create a bash script `rolling.sh`
-   2. Use the command `kubectl set image deployment nginx-rolling nginx=nginx:1.21.1` to upgrade the deployment image version
-   3. Create a loop that waits for the deployment to roll out. Use this boilerplate code to create the for loop
-    ```
-    ATTEMPTS=0
-    ROLLOUT_STATUS_CMD="kubectl rollout status deployment/nginx-rolling -n udacity"
-    until $ROLLOUT_STATUS_CMD || [ $ATTEMPTS -eq 60 ]; do
-    $ROLLOUT_STATUS_CMD
-    ATTEMPTS=$((attempts + 1))
-    sleep 1
-    echo "Deployment still rolling out..."
-    done
-    ```
-   4. echo at the end the script the deployment is finished.
+   1. Run the bash script `./rolling.sh`
+   2. Check that the procedure replaced all the containers with the new nginx version 
 6. Now we will do the opposite and rollback the deployment to the previous version `1.20.1` and pause halfway through
    1. Update your script with the older image number then execute
    2. In a separate terminal pause the deployment with `kubectl rollout pause deployment nginx-rolling`
@@ -43,7 +42,7 @@
 7. Tear down environment
    1. `kubectl delete all --all -n udacity`
 
-## Excercise # 3 - Canary Deployment
+## Exercise # 3 - Canary Deployment
 1. Ensure you have connectivity to your local kubernetes cluster
 2. Apply the `index_v1_html.yml` & `index_v2_html.yml` configmaps to deploy the service html templates.
 3. Deploy the v1 & v2 starter template and service to the cluster `canary-v1.yml`, `canary-v2.yml` & `canary-svc.yml`
@@ -87,7 +86,7 @@
 8. Tear down environment
    1. `kubectl delete all --all -n udacity`
 
-## Excercise # 4 - Blue Green Deployment
+## Exercise # 4 - Blue Green Deployment
 1. Log into your student AWS account and switch to region `us-east-2`
 2. Setup your local aws credentials
 3. Launch the kubernetes cluster in starter terraform code provided
