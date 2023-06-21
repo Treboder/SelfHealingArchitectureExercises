@@ -1,5 +1,5 @@
 ## Excercise # 1 - Basic Deployment
-1. Ensure you have connectivity to your local kubernetes cluster
+1. Ensure you have connectivity to your local kubernetes cluster (`kubectl config use-context docker-desktop`)
 2. Apply the `basic-deployment.yml` deployment configuration file. 
 3. Take a screenshot of the running pods: `kubectl get pods -n udacity`
 4. Document the image number in the `nginx-basic` deployment
@@ -16,6 +16,8 @@
 ## Excercise # 2 - Rolling Deployment
 1. Ensure you have connectivity to your local kubernetes cluster
 2. Apply the `rolling_deploy.yml` deployment configuration file.
+   kubectl apply -f .\rolling_deploy.yml
+
 3. Take a screenshot of the running pods: `kubectl get pods -n udacity`
 4. Document the image number in the `nginx-rolling` deployment
 5. Now we will initiate a rolling deployment for a newer version of nginx via a bash script
