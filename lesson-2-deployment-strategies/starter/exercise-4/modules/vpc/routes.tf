@@ -51,7 +51,8 @@ locals {
 resource "aws_eip" "nat" {
   count = local.nat_gateway_count
 
-  vpc = true
+  vpc = true # Argument is deprecated, use domain attribute instead
+#  domain = "vpc"
 
   tags = merge(
     {
