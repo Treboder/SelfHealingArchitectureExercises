@@ -1,7 +1,10 @@
+# provides endpoint to access the deployment
+
 apiVersion: v1
 kind: Service
 metadata:
   name: canary-svc
+  namespace: udacity
 spec:
   type: ClusterIP
   selector:

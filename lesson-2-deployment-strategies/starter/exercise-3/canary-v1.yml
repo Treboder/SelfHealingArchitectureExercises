@@ -23,7 +23,7 @@ spec:
           ports:
             - containerPort: 80
           volumeMounts:
-            - mountPath: /usr/share/nginx/html
+            - mountPath: /usr/share/nginx/html # used to render the version
               name: configmap-vol
       nodeSelector:
         kubernetes.io/os: linux

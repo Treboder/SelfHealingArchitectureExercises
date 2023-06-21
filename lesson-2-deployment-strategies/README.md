@@ -44,45 +44,27 @@
 
 ## Exercise # 3 - Canary Deployment
 1. Ensure you have connectivity to your local kubernetes cluster
+   1. `kubectl config use-context docker-desktop`
 2. Apply the `index_v1_html.yml` & `index_v2_html.yml` configmaps to deploy the service html templates.
-3. Deploy the v1 & v2 starter template and service to the cluster `canary-v1.yml`, `canary-v2.yml` & `canary-svc.yml`
-   1. you'll notice v2 has `0` replicas 
-4. Get the service cluster ip address and curl it 5 times to confirm only v1 of the application is reachable
-   1. `kubectl get service canary-svc`
+   1. Run `kubectl apply -f index_v1_html.yml`
+   2. Run`kubectl apply -f index_v2_html.yml`
+   3. Check with `kubectl get configmap -n udacity`
+3. Deploy the service to the cluster (`canary-svc.yml`)
+   1. Run 'kubectl apply -f .\canary-svc.yml'
+   2. Check with 'kubectl get service -n udacity'   
+4. Deploy the v1 & v2 starter template to the cluster (`canary-v1.yml`, `canary-v2.yml`)
+   1. Run `kubectl apply -f .\canary-v1.yml` (container with v1 started right now)
+   2. Run `kubectl apply -f .\canary-v2.yml` (You'll notice v2 has `0` replicas) 
+5. Get the service cluster ip address and curl it 5 times to confirm only v1 of the application is reachable
+   1. `kubectl get service canary-svc -n udacity`
    2. Use an ephermeral container to access the kubernetes internal network
       1. `kubectl run debug --rm -i --tty --image nicolaka/netshoot -- /bin/bash`
-      2. `curl <service_ip`
-5. Now we will initiate a canary deployment for `canary-v2` via a bash script
-   1. create a bash script `canary.sh` and create a function called `canary_deploy` which will house your execution code
-   3. Deploy `canary-v2.yml` in incrementally by 2 while reducing the number of `canary-v1` replicas. Pause after every deployment for manual verification
-      1. use `kubectl get pods -n udacity | grep -c canary-v1` to get the number of pod replicas for each app
-      2. use `kubectl scale deployment canary-v2 --replicas=<number to scale by>` to increase/decrease pod replicas
-      3. use bash while loops to keep the deployment running until v1 is scale down to 0
-   ```
-   while [ $(kubectl get pods -n udacity | grep -c canary-v1) -gt 0 ]
-   do
-      canary_deploy
-      manual_verification
-   done
-   ```
-
-      4. use this code snippet to ask for a user prompt
-   ```
-   function manual_verification {
-     read -p "Continue deployment? (y/n) " answer
-   
-       if [[ $answer =~ ^[Yy]$ ]] ;
-       then
-           echo "continuing deployment"
-       else
-           exit
-       fi
-   }
-   ```
-6. Execute the script to deploy your application. 
+      2. `curl <service_ip>` and see `<html><h1>This is version 1</h1></html`
+6. Now we will initiate a canary deployment for `canary-v2` via a bash script
+   1. Run the bash script `./canary.sh`
+   2. Check that the procedure replaced all the containers with the new nginx version
 7. During the first manual verification step ensure you can curl the service and get a response from both versions of the application.
    1. Then continue until all replicas of v2 are deployed
-
 8. Tear down environment
    1. `kubectl delete all --all -n udacity`
 
