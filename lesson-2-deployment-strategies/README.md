@@ -165,8 +165,8 @@ Remove this deployment using: `helm uninstall kube-ops-view`
    1. There is also an associated dns zone `udacityexercise` in `dns.tf` that allows you to curl the hostname `blue-green.udacityexercise` from an ec2 instance
    2. Confirm you can curl this hostname from the created `curl-instance` ec2 instance (also created via terraform before)
       1. Connect to the ec2 instance via EC2 Instance Connect
-         1. ![connect_ec2_1.png](starter/exercise-4/imgs/connect_ec2_1.png)
-         2. ![connect_ec2_2.png](starter/exercise-4/imgs/connect_ec2_2.png)
+         1. ![connect_ec2_1.png](exercise-4/imgs/connect_ec2_1.png)
+         2. ![connect_ec2_2.png](exercise-4/imgs/connect_ec2_2.png)
       2. `curl blue-green.udacityexercise`
 9. Mimic the `blue.yml` deployment script and create a `green.yml` which replaces all references of blue with green.
    1. Run `kubectl apply -f .\green.yml` spawns the "green" pods
