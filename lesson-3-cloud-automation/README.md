@@ -112,7 +112,7 @@ Requires [eksctl](https://eksctl.io/introduction/#installation)
 5. Launch the `alot-of-services.yml` to the cluster
     1. `kubectl apply -f alot-of-services.yml`
 6. Take a screenshot of the running pods: `kubectl get pods -n udacity`
-7. You'll notice not all of the pods are in running state (AWS cluster can't support all of them with the initial single node). 
+7. You'll notice NOT all of the pods are in running state (AWS cluster can't support all of them with the initial single node). 
    1. Identity the problem with them using the `kubectl describe` command
    1. e.g `kubectl describe pod <name_of_pod>`
    2. you'll notice at the bottom in events ` 0/1 nodes are available: 1 Too many pods.`
