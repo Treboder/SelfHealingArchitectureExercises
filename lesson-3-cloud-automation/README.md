@@ -10,6 +10,8 @@
 
 ## Exercise # 1 - Horizontal Scaling (local Kubernetes)
 
+### Idea behind is to dynamically add new pods to the cluster as the load increases 
+
 1. Ensure you have connectivity to your local Kubernetes cluster   
    1. `kubectl config use-context docker-desktop`
    2. Optional: Permanently switch namespace with `kubectl config set-context --current --namespace=udacity` and you do not need `-n udacity` at the end of every command
@@ -42,6 +44,8 @@
 
 ## Exercise # 2 - EC2 Scaling (AWS)
 
+### Idea behind is to manually scale the number of EC2 instances in a auto-scaling group using a AMI and the Launch Template
+
 1. Log into your student AWS account and switch to region `us-east-2`
 2. Setup your local aws credentials
 3. Launch a basic EC2 instance with the starter terraform code provided
@@ -52,7 +56,7 @@
     1. ![create_ami.png](starter/exercise-2/imgs/create_ami.png)
     2. ![create_ami_2.png](starter/exercise-2/imgs/create_ami_2.png)
     3. It takes a few minutes to create
-5. Create an autoscaling launch template called `scaling-events`
+5. Create an autoscaling `Launch Template` called `scaling-events` via AWS 
     1. Navigate to the  `EC2 -> Instances -> Launch Templates` menu
     2. Create a launch template with these fields. Leave the rest with default values
         1. name: `scaling-events`
@@ -63,7 +67,7 @@
            1. key: `Name`
            2. value: `auto-scaled-instances`
         6. ![as_launch_tpl.png](starter/exercise-2/imgs/as_launch_tpl.png)
-6. Create and autoscaling group to use the launch template
+6. Create and autoscaling group to use the `Launch Template`
    1. Navigate to the  `EC2 -> Auto Scaling -> Auto Scaling Groups` menu
    2. Create an autoscaling group configuration called `scaling-events`
        1. associate it with the launch template `scaling-events`
@@ -78,7 +82,7 @@
        2. Desired capacity to `3`
    5. Take screenshot of the EC2 instances running in the environment.
    6. Clean up environment by setting autoscaling groups Maximum, Minimum, Desired capacity to `0`
-7. Tear down resources created for the excercise
+7. Tear down resources created for the exercise
    1. Manually delete/deregister the following resources in this order
        1. Auto Scaling Group
        2. Launch Template
@@ -88,7 +92,10 @@
 
 
 ## Exercise # 3 - Scaling EC2 nodes in Kubernetes Clusters (AWS)
+
 Requires [eksctl](https://eksctl.io/introduction/#installation)
+
+### Idea behind is to automatically scale an AWS Kubernetes cluster in terms of number of nodes
 
 1. Log into your student AWS account and switch to region `us-east-2`
 2. Setup your local aws credentials

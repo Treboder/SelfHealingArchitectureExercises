@@ -1,4 +1,5 @@
 .github
 .idea
 .terraform
-/lesson-3-cloud-automation/starter/hey/hey_windows_amd64
+/lesson-3-cloud-automation/starter/hey
+/lesson-3-cloud-automation/starter/exercise-2/.terraform.lock.hcl
