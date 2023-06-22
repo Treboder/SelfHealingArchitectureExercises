@@ -59,8 +59,8 @@ The exercises comprise four different deployment strategies:
    2. Run`kubectl apply -f index_v2_html.yml`
    3. Check with `kubectl get configmap -n udacity`
 3. Deploy the service to the cluster (`canary-svc.yml`)
-   1. Run 'kubectl apply -f .\canary-svc.yml'
-   2. Check with 'kubectl get service -n udacity'   
+   1. Run `kubectl apply -f .\canary-svc.yml`
+   2. Check with `kubectl get service -n udacity`   
 4. Deploy the v1 & v2 starter template to the cluster (`canary-v1.yml`, `canary-v2.yml`)
    1. Run `kubectl apply -f .\canary-v1.yml` (container with v1 started right now)
    2. Run `kubectl apply -f .\canary-v2.yml` (You'll notice v2 has `0` replicas) 
