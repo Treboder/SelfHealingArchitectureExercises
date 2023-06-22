@@ -1,12 +1,49 @@
+# INTRODUCTION
 
+These examples demonstrate self-healing cloud architectures as part of Udacity course "Site Reliability Engineer".
+
+The exercises comprise three self-healing cloud automation examples:
+1. Exercise # 1 - Horizontal Scaling (local Kubernetes)
+2. Exercise # 2 - EC2 Scaling (AWS)
+3. Exercise # 3 - Scaling EC2 nodes in Kubernetes Clusters (AWS)
+
+# PREPARATIONS
 
 # Required Tools
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) as Local Kubernetes Cluster
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/)
 - [Hey Load testing](https://github.com/rakyll/hey)
+- [eksctl](https://eksctl.io/introduction/#installation)
 
-# Lesson 3 Exercises
+
+# Optional Tools: kube-ops-view
+You may visualize your AWS EKS cluster in exercise 3 using the helm chart `kube-ops-view`
+
+1. Install [helm](https://www.eksworkshop.com/beginner/060_helm/helm_intro/install/)
+2. Add the stable repo: `helm repo add stable https://charts.helm.sh/stable`
+3. Install the helm chart `kube-ops-view`
+    ```
+    helm install kube-ops-view \
+    ```
+   or
+    ``` 
+    helm stable/kube-ops-view \
+    ```
+   with
+    ```
+    --set service.type=LoadBalancer \
+    --set rbac.create=True
+    ```
+4. Confirm the helm chart is installed successfully
+    - `helm list`
+
+5. Get the service url to view the cluster dashboard
+- `kubectl get svc kube-ops-view | tail -n 1 | awk '{ print "Kube-ops-view URL = http://"$4 }'`
+
+To remove this deployment use: `helm uninstall kube-ops-view`
+
+# EXERCISES
 
 ## Exercise # 1 - Horizontal Scaling (local Kubernetes)
 
@@ -95,7 +132,7 @@
 
 Requires [eksctl](https://eksctl.io/introduction/#installation)
 
-### Idea behind is to automatically scale an AWS Kubernetes cluster in terms of number of nodes
+### Idea behind is to automatically scales the number of Kubernetes nodes in order to support deployed pods
 
 1. Log into your student AWS account and switch to region `us-east-2`
 2. Setup your local aws credentials
@@ -106,16 +143,17 @@ Requires [eksctl](https://eksctl.io/introduction/#installation)
 4. Ensure you have connectivity to your aws kubernetes cluster
    1.`aws eks --region us-east-2 update-kubeconfig --name udacity-cluster`
    2.Change Kubernetes context to the new AWS cluster
-    - `kubectl config use-context arn:aws:eks:us-east-2:225791329475:cluster/udacity-cluster`
+    - `kubectl config use-context <cluster_name>` (e.g. arn:aws:eks:us-east-2:225791329475:cluster/udacity-cluster)
     3. Confirm with: `kubectl get pods --all-namespaces`
     4. Change context to `udacity` namespace
         - `kubectl config set-context --current --namespace=udacity`
 5. Launch the `alot-of-services.yml` to the cluster
     1. `kubectl apply -f alot-of-services.yml`
 6. Take a screenshot of the running pods: `kubectl get pods -n udacity`
-7. You'll notice not all of the pods are in running state. Identity the problem with them using the `kubectl describe` command
-    1. e.g `kubectl describe pod pod-agungxiax`
-    2. you'll notice at the bottom in events ` 0/1 nodes are available: 1 Too many pods.`
+7. You'll notice not all of the pods are in running state (AWS cluster can't support all of them with the initial single node). 
+   1. Identity the problem with them using the `kubectl describe` command
+   1. e.g `kubectl describe pod <name_of_pod>`
+   2. you'll notice at the bottom in events ` 0/1 nodes are available: 1 Too many pods.`
 8. To resolve this problem manually increase the cluster node size via terraform and apply
    ```
    nodes_desired_size = 4
@@ -134,30 +172,26 @@ Requires [eksctl](https://eksctl.io/introduction/#installation)
    ```
 13. Create a node autoscaling configuration
 
-    Setup OIDC provider
+    1. Setup OIDC provider
    ```
-   eksctl utils associate-iam-oidc-provider \
-   --cluster udacity-cluster \
-   --approve \
-   --region=us-east-2
+   eksctl utils associate-iam-oidc-provider --cluster udacity-cluster --approve --region=us-east-2
    ```
-
-   Create a cluster serviceaccount with IAM permissions. Update the follow commands with the AWS account number
    
-    ```
-       eksctl create iamserviceaccount \
+    2. Create a cluster service account with IAM permissions. Update the follow commands with the AWS account number   
+   ```
+   eksctl create iamserviceaccount \
        --name cluster-autoscaler \
        --namespace kube-system \
        --cluster udacity-cluster \
        --attach-policy-arn "arn:aws:iam::${ACCOUNT_ID}:policy/udacity-k8s-autoscale" \
        --approve \
        --override-existing-serviceaccounts \
-       --region=us-east-2
+       --region=us-east-2      
     ```
-
-14. Apply the provided `cluster_autoscale.yml` configuration to create a service that will listen for events like Node capacity reached to automatically increase the number of nodes in the cluster
+    
+14. Apply the provided `cluster_autoscale.yml` configuration to create a service that will listen for events like Node capacity reached to automatically increase the number of nodes in the cluster via `kubectl apply -f cluster_autoscale.yml`
 15. In a separate tab watch the cluster-autoscale app's logs `kubectl -n kube-system logs -f deployment/cluster-autoscaler`
-16. Then Launch the `alot-of-services.yml` to the cluster
+16. Launch the `alot-of-services.yml` to the cluster
     1. `kubectl apply -f alot-of-services.yml`
 17. Wait a minute and you'll notice the number in ec2 instances beginning to increase to account for the number of services
     1. To view the pods status use `kubectl get pods -n udacity`
@@ -168,23 +202,3 @@ Requires [eksctl](https://eksctl.io/introduction/#installation)
     2. `kubectl delete all --all -n udacity`
     3. `terraform destroy`
 
-
-# Additional Resources
-You may visualize your AWS EKS cluster in excercise 3 using the helm chart `kube-ops-view`
-
-1. Install [helm](https://www.eksworkshop.com/beginner/060_helm/helm_intro/install/)
-2. Add the stable repo: `helm repo add stable https://charts.helm.sh/stable`
-3. Install the helm chart `kube-ops-view`
-    ```
-    helm install kube-ops-view \
-    stable/kube-ops-view \
-    --set service.type=LoadBalancer \
-    --set rbac.create=True
-    ```
-4. Confirm the helm chart is installed successfully
-   - `helm list`
-
-5. Get the service url to view the cluster dashboard
-- `kubectl get svc kube-ops-view | tail -n 1 | awk '{ print "Kube-ops-view URL = http://"$4 }'`
-
-To remove this deployment use: `helm uninstall kube-ops-view`   

@@ -4,7 +4,7 @@ metadata:
   name: services-galore
   namespace: udacity
 spec:
-  replicas: 25
+  replicas: 25 # too much for a kubernetes cluster with one node (limit around 17), a second node is required
   selector:
     matchLabels:
       app: services-galore
