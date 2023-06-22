@@ -67,15 +67,14 @@ You may visualize your AWS EKS cluster in exercise 3 using the helm chart `kube-
 2. Add the stable repo: `helm repo add stable https://charts.helm.sh/stable`
 3. Install the helm chart `kube-ops-view`
     ```
-    helm install kube-ops-view \
+    helm install kube-ops-view 
     ```
    or
     ``` 
-    helm stable/kube-ops-view \
+    helm install stable/kube-ops-view --set service.type=LoadBalancer
     ```
-   with
-    ```
-    --set service.type=LoadBalancer \
+   with results in failure ("ensure CRDs installed")
+    ```    
     --set rbac.create=True
     ```
 4. Confirm the helm chart is installed successfully
