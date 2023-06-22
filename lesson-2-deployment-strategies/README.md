@@ -113,7 +113,7 @@ The exercises comprise four different deployment strategies:
    1. Run `kubectl apply -f .\green.yml` spawns the "green" pods
    2. Check with `kubectl get pods` shows the "green" pods   
 10. Prepare the AWS infrastructure for the "green" deployment 
-    1. Change terraform file type from `green.todo` to `green.tf` in order to let Terraform make the following changes:
+    1. Uncomment all code in `green.tf` in order to let Terraform make the following changes:
        1. Create the `green` service mimicking the `blue` service in `kubernetes_resources.tf` 
        2. Create dns record for the "green app" with the `set identifier` of `green` mimicking the `resource "aws_route53_record" "blue"` for blue in `dns.tf` 
     2. Run `terraform apply` to execute the change in AWS infrastructure (add two additional resources from above)
