@@ -7,44 +7,6 @@ The exercises comprise three self-healing cloud automation examples:
 2. Exercise # 2 - EC2 Scaling (AWS)
 3. Exercise # 3 - Scaling EC2 nodes in Kubernetes Clusters (AWS)
 
-# PREPARATIONS
-
-# Required Tools
-
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) as Local Kubernetes Cluster
-- [kubectl](https://kubernetes.io/docs/reference/kubectl/)
-- [Hey Load testing](https://github.com/rakyll/hey)
-- [eksctl](https://eksctl.io/introduction/#installation)
-
-
-# Optional Tools: kube-ops-view
-You may visualize your AWS EKS cluster in exercise 3 using the helm chart `kube-ops-view`
-
-1. Install [helm](https://www.eksworkshop.com/beginner/060_helm/helm_intro/install/)
-2. Add the stable repo: `helm repo add stable https://charts.helm.sh/stable`
-3. Install the helm chart `kube-ops-view`
-    ```
-    helm install kube-ops-view \
-    ```
-   or
-    ``` 
-    helm stable/kube-ops-view \
-    ```
-   with
-    ```
-    --set service.type=LoadBalancer \
-    --set rbac.create=True
-    ```
-4. Confirm the helm chart is installed successfully
-    - `helm list`
-
-5. Get the service url to view the cluster dashboard
-- `kubectl get svc kube-ops-view | tail -n 1 | awk '{ print "Kube-ops-view URL = http://"$4 }'`
-
-To remove this deployment use: `helm uninstall kube-ops-view`
-
-# EXERCISES
-
 ## Exercise # 1 - Horizontal Scaling (local Kubernetes)
 
 ### Idea behind is to dynamically add new pods to the cluster as the load increases 

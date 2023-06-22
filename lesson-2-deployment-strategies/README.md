@@ -8,67 +8,6 @@ The exercises comprise four different deployment strategies:
 3. Exercise # 3 - Canary Deployment (on local Docker Desktop Kubernetes)
 4. Exercise # 4 - Blue-Green Deployment (on AWS)
 
-# PREPARATIONS
-
-## Mandatory local Kubernetes Setup
-1. [Docker Desktop](https://www.docker.com/products/docker-desktop/) with activated Kubernetes
-2. [Kubectl](https://kubernetes.io/docs/reference/kubectl/)
-
-## Kubernetes Helper Libraries
-- [Kubectx](https://github.com/ahmetb/kubectx#kubectx1)
-- [kubens](https://github.com/ahmetb/kubectx#kubens1)
-
-## AWS CLI Setup with multiple profiles (didn't get it work with the udacity aws credentials)
-Based on [Set Up the AWS CLI](https://aws.amazon.com/de/getting-started/guides/setup-environment/module-three/) 
-proceed as follows:
-
-1. Install the AWS CLI and verify with: `aws --version`
-2. Create new profile with `aws configure --profile <profile_name>` and set:
-   1. AWS Access Key ID
-   2. AWS Secret Access Key
-   3. Default Region (e.g. us-east-1)
-   4. Default Output Format (i.e. json)
-3. Get the available profiles with `aws configure list-profiles`
-4. Switch the profile depending on your OS with:
-   1. Linux and MacOS -> `export AWS_PROFILE=admin`
-   2. Windows Command Prompt -> `setx AWS_PROFILE admin`
-   3. PowerShell -> `$Env:AWS_PROFILE="admin"`
-5. Get the currently used profile with `aws configure list`
-6. Verify the currently active profile with `aws sts get-caller-identity` 
-7. Exemplary list S3 buckets from this profile with: `aws s3 ls --profile <profile_name>`
-8. Remove unwanted profiles (or add manually), by editing the config files:
-   1. `vi ~/.aws/credentials`
-   2. `vi ~/.aws/config` 
-
-## Visualizing Local Kubernetes Cluster
-You may visualize your local kubernetes cluster using the `ops-view` deployment found in the [visual-support](https://github.com/udacity/nd087-c3-self-healing-architectures-exercises/tree/7ff0779bfbc514ca11334bd3912d8d6060e50533/lesson-2-deployment-strategies/exercises/starter/visual-support) directory
-1. `kubectl apply -f visual-support/ops-view.yml`
-2. Visit the URL `http://localhost:30092/` on your browser
-
-Remove this deployment using: `kubectl delete -f visual-support/ops-view.yml`
-
-## Visualizing AWS EKS Cluster
-You may visualize your AWS EKS cluster using the helm chart `kube-ops-view`
-
-1. Install [helm](https://www.eksworkshop.com/beginner/060_helm/helm_intro/install/)
-2. Add the stable repo: `helm repo add stable https://charts.helm.sh/stable`
-3. Install the helm chart `kube-ops-view`
-    ```
-    helm install kube-ops-view \
-    stable/kube-ops-view \
-    --set service.type=LoadBalancer \
-    --set rbac.create=True
-    ```
-4. Confirm the helm chart is installed successfully
-   - `helm list`
-
-5. Get the service URL to view the cluster dashboard
-- `kubectl get svc kube-ops-view | tail -n 1 | awk '{ print "Kube-ops-view URL = http://"$4 }'`
-
-Remove this deployment using: `helm uninstall kube-ops-view`
-
-# EXERCISES
-
 ## Exercise # 1 - Basic Deployment (on local Docker Desktop Kubernetes)
 1. Ensure you have connectivity to your local kubernetes cluster
    1. `kubectl config use-context docker-desktop`
